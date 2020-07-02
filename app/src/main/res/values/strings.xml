@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Yet another context aware app</string>
+    <string name="preference_file_key">tk3.group42.yetanothercontextawareapp.PREFERENCES</string>
 </resources>
