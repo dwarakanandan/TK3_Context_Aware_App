@@ -34,6 +34,12 @@ public class LocationReceiver extends BroadcastReceiver {
             sharedPref.edit().putString(FitnessUtility.CURRENT_LATITUDE, String.valueOf(location.getLatitude())).apply();
             sharedPref.edit().putString(FitnessUtility.CURRENT_LONGITUDE, String.valueOf(location.getLongitude())).apply();
 
+            if (sharedPref.getBoolean(FitnessUtility.ACTION_TRIGGERED, true)) {
+                sharedPref.edit().putBoolean(FitnessUtility.ACTION_TRIGGERED,true).apply();
+                ContextAwareActionProcessor contextAwareActionProcessor = new ContextAwareActionProcessor(context);
+                contextAwareActionProcessor.processActionForLocation(location.getLatitude(), location.getLongitude());
+            }
+
             try {
                 Thread.sleep(20000);
             } catch (InterruptedException ignored) {

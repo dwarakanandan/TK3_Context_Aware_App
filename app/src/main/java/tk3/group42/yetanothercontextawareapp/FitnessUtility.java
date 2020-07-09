@@ -14,6 +14,8 @@ public class FitnessUtility {
     public static final String UNKNOWN = "UNKNOWN";
     public static String CURRENT_LATITUDE = "CURRENT_LATITUDE";
     public static String CURRENT_LONGITUDE = "CURRENT_LONGITUDE";
+    public static String CURRENT_DETECTED_ACTIVITY = "CURRENT_DETECTED_ACTIVITY";
+    public static String ACTION_TRIGGERED = "ACTION_TRIGGERED";
 
     public static String getActivityDisplayName(int activityId) {
         switch (activityId) {

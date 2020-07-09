@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -28,7 +29,6 @@ import static tk3.group42.yetanothercontextawareapp.MainActivity.CHANNEL_ID;
 public class ActivityTransitionReceiverService extends Service {
     private static final String TAG = "ActivityTransitionRecei";
     private static BroadcastReceiver mActivityTransitionReceiver;
-    private String ACTION_STOP_SERVICE = "tk3.group42.yetanothercontextawareapp.ACTION_STOP_SERVICE";
     static float stepCount;
 
     @Override
@@ -70,6 +70,7 @@ public class ActivityTransitionReceiverService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        String ACTION_STOP_SERVICE = "tk3.group42.yetanothercontextawareapp.ACTION_STOP_SERVICE";
         if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
             Log.d(TAG,"User killed service");
             stopSelf();
@@ -78,7 +79,7 @@ public class ActivityTransitionReceiverService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         Intent stopSelf = new Intent(this, ActivityTransitionReceiverService.class);
-        stopSelf.setAction(this.ACTION_STOP_SERVICE);
+        stopSelf.setAction(ACTION_STOP_SERVICE);
         PendingIntent pStopSelf = PendingIntent.getService(this, 0, stopSelf,PendingIntent.FLAG_CANCEL_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -122,12 +123,15 @@ public class ActivityTransitionReceiverService extends Service {
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
+                        SharedPreferences sharedPref = getSharedPreferences(
+                                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                         for (ActivityTransitionEvent activityTransitionEvent : activityTransitionResult.getTransitionEvents()) {
-
                             if (activityTransitionEvent.getTransitionType() == ActivityTransition.ACTIVITY_TRANSITION_ENTER) {
                                 Log.d(TAG, "run: " + FitnessUtility.getActivityDisplayName(activityTransitionEvent.getActivityType()) + " TRANSITION_ENTER");
+                                sharedPref.edit().putInt(FitnessUtility.CURRENT_DETECTED_ACTIVITY, activityTransitionEvent.getActivityType()).apply();
                             } else {
                                 Log.d(TAG, "run: " + FitnessUtility.getActivityDisplayName(activityTransitionEvent.getActivityType()) + " TRANSITION_EXIT");
+                                sharedPref.edit().putBoolean(FitnessUtility.ACTION_TRIGGERED, false).apply();
                             }
                         }
                     }
