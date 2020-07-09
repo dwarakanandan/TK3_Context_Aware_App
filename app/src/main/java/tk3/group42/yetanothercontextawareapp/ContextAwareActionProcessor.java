@@ -22,7 +22,7 @@ public class ContextAwareActionProcessor {
     final int DARMSTADT_HBF = 1;
     final int HERRENGARTEN = 2;
     final int ULB_DARMSTADT = 3;
-    final float RADIUS_IN_METERS = 100.0f;
+    final float RADIUS_IN_METERS = 50.0f;
 
     private Context context;
 
