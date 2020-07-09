@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.util.Log;
 
+import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.LocationResult;
 
 public class LocationReceiver extends BroadcastReceiver {
@@ -34,7 +35,7 @@ public class LocationReceiver extends BroadcastReceiver {
             sharedPref.edit().putString(FitnessUtility.CURRENT_LATITUDE, String.valueOf(location.getLatitude())).apply();
             sharedPref.edit().putString(FitnessUtility.CURRENT_LONGITUDE, String.valueOf(location.getLongitude())).apply();
 
-            if (sharedPref.getBoolean(FitnessUtility.ACTION_TRIGGERED, true)) {
+            if (!sharedPref.getBoolean(FitnessUtility.ACTION_TRIGGERED, false)) {
                 sharedPref.edit().putBoolean(FitnessUtility.ACTION_TRIGGERED,true).apply();
                 ContextAwareActionProcessor contextAwareActionProcessor = new ContextAwareActionProcessor(context);
                 contextAwareActionProcessor.processActionForLocation(location.getLatitude(), location.getLongitude());

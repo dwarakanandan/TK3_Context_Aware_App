@@ -22,7 +22,7 @@ public class ContextAwareActionProcessor {
     final int DARMSTADT_HBF = 1;
     final int HERRENGARTEN = 2;
     final int ULB_DARMSTADT = 3;
-    final float RADIUS_IN_METERS = 50.0f;
+    final float RADIUS_IN_METERS = 100.0f;
 
     private Context context;
 
@@ -54,7 +54,7 @@ public class ContextAwareActionProcessor {
                             .setContentText("Search for train schedules ?")
                             .addAction(R.drawable.ic_run, "Yes", pIntent)
                             .build();
-                    notificationManager.notify(DARMSTADT_HBF, notification);
+                    notificationManager.notify(10, notification);
                 }
                 break;
             case HERRENGARTEN:
@@ -68,7 +68,7 @@ public class ContextAwareActionProcessor {
                             .setContentText("Listen to some music while exercising ?")
                             .addAction(R.drawable.ic_run, "Yes", pIntent)
                             .build();
-                    notificationManager.notify(HERRENGARTEN, notification);
+                    notificationManager.notify(11, notification);
                 }
                 break;
             case ULB_DARMSTADT:
@@ -81,7 +81,7 @@ public class ContextAwareActionProcessor {
                             .setContentText("Launch sound setting to modify ring/media volume ?")
                             .addAction(R.drawable.ic_run, "Yes", pIntent)
                             .build();
-                    notificationManager.notify(ULB_DARMSTADT, notification);
+                    notificationManager.notify(12, notification);
                 }
                 break;
             default:
@@ -93,25 +93,22 @@ public class ContextAwareActionProcessor {
 
         Location.distanceBetween(49.872312, 8.629538,
                 latitude, longitude, results);
-        
+        Log.d(TAG, "getLocationCode: distance from DARMSTADT_HBF = " + results[0]);
         if (results[0] <= RADIUS_IN_METERS) {
-            Log.d(TAG, "getLocationCode: distance from DARMSTADT_HBF = " + results[0]);
             return DARMSTADT_HBF;
         }
 
         Location.distanceBetween(49.878096, 8.652099,
                 latitude, longitude, results);
-        
+        Log.d(TAG, "getLocationCode: distance from HERRENGARTEN = " + results[0]);
         if (results[0] <= RADIUS_IN_METERS) {
-            Log.d(TAG, "getLocationCode: distance from HERRENGARTEN = " + results[0]);
             return HERRENGARTEN;
         }
 
         Location.distanceBetween(49.876423, 8.657697,
                 latitude, longitude, results);
-        
+        Log.d(TAG, "getLocationCode: distance from ULB_DARMSTADT = " + results[0]);
         if (results[0] <= RADIUS_IN_METERS) {
-            Log.d(TAG, "getLocationCode: distance from ULB_DARMSTADT = " + results[0]);
             return ULB_DARMSTADT;
         }
 
